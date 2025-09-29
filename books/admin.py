@@ -36,7 +36,7 @@ class PasswordResetOTPAdmin(admin.ModelAdmin):
 
     def is_valid_status(self, obj):
         return obj.is_valid()
-    is_valid_status.boolean = True  # ✅ shows green/red tick in admin
+    is_valid_status.boolean = True  
     is_valid_status.short_description = "Valid?"
 
 

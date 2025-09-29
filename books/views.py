@@ -6,6 +6,12 @@ from django.conf import settings
 from .models import Book
 from .forms import CustomUserCreationForm, CustomAuthenticationForm, BookForm
 import ssl
+from django.conf import settings
+from django.contrib import messages
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.contrib.auth.tokens import default_token_generator
+from .models import CustomUser 
 
 
 def register_view(request):
@@ -13,10 +19,8 @@ def register_view(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-
             # Ignore SSL cert verification (testing only)
             ssl._create_default_https_context = ssl._create_unverified_context
-
             send_mail(
                 'Welcome!',
                 'Thanks for registering.',
@@ -37,11 +41,7 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-
-            # Ignore SSL cert verification (testing only)
             ssl._create_default_https_context = ssl._create_unverified_context
-
-            # Send login notification email
             send_mail(
                 'Login Alert',
                 f'Hi {user.email}, you have successfully logged in.',
@@ -49,28 +49,23 @@ def login_view(request):
                 [user.email],
                 fail_silently=False
             )
-
             return redirect('book_list')
     else:
         form = CustomAuthenticationForm()
     return render(request, 'books/login.html', {'form': form})
 
-
-
 def logout_view(request):
     logout(request)
     return redirect('login')
 
-
 @login_required
 def book_list(request):
-    books = Book.objects.filter(user=request.user)  # 👈 only this user's books
+    books = Book.objects.filter(user=request.user) 
     return render(request, 'books/book_list.html', {'books': books})
-
 
 @login_required
 def book_detail(request, pk):
-    book = get_object_or_404(Book, pk=pk, user=request.user)  # 👈 restrict to owner
+    book = get_object_or_404(Book, pk=pk, user=request.user)  
     return render(request, 'books/book_detail.html', {'book': book})
 
 
@@ -80,7 +75,7 @@ def book_create(request):
         form = BookForm(request.POST)
         if form.is_valid():
             book = form.save(commit=False)
-            book.user = request.user  # 👈 assign logged-in user
+            book.user = request.user  
             book.save()
             return redirect('book_list')
     else:
@@ -103,33 +98,22 @@ def book_update(request, pk):
 
 @login_required
 def book_delete(request, pk):
-    # Only allow the owner to delete
     book = get_object_or_404(Book, pk=pk, user=request.user)
-    
     if request.method == 'POST':
         book.delete()
-        return redirect('book_list')  # redirect to book list after deletion
-
-    # Show a confirmation page
+        return redirect('book_list')  
     return render(request, 'books/book_confirm_delete.html', {'book': book})
 
 
 
 
-from django.shortcuts import render, redirect
-from django.core.mail import send_mail
-from django.conf import settings
-from django.contrib import messages
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes, force_str
-from django.contrib.auth.tokens import default_token_generator
-from .models import CustomUser  # use your existing user model
+
 
 # ===== Request Password Reset =====
 def request_password_reset(request):
     if request.method == "POST":
         email = request.POST.get("email")
-        user = CustomUser.objects.filter(email=email).first()  # use CustomUser
+        user = CustomUser.objects.filter(email=email).first()  
 
         if user:
             uid = urlsafe_base64_encode(force_bytes(user.pk))

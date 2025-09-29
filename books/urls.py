@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
     path('register/', views.register_view, name='register'),
-    path('accounts/login/', views.login_view, name='login'),  # Changed to match Django's default
+    path('accounts/login/', views.login_view, name='login'), 
     path('logout/', views.logout_view, name='logout'),
     path('', views.book_list, name='book_list'),
     path('book/<int:pk>/', views.book_detail, name='book_detail'),

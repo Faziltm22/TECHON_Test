@@ -18,4 +18,4 @@ class CustomAuthenticationForm(AuthenticationForm):
 class BookForm(forms.ModelForm):
     class Meta:
         model = Book
-        exclude = ['user']  # 👈 user is auto-assigned, don’t show in form
+        exclude = ['user'] 
