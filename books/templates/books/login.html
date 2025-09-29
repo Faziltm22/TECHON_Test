@@ -1,0 +1,142 @@
+{% extends 'books/base.html' %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <h2>Login</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.username }}
+            <label>Username</label>
+        </div>
+        <div class="form-group">
+            {{ form.password }}
+            <label>Password</label>
+        </div>
+        <button type="submit" class="btn-submit">Login</button>
+    </form>
+
+    <p class="forgot-password">
+        <a href="{% url 'request_password_reset' %}">Forgot Password?</a>
+    </p>
+
+    {% for message in messages %}
+    <p class="message">{{ message }}</p>
+    {% endfor %}
+</div>
+
+<style>
+/* Container */
+.login-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 40px 30px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+}
+
+/* Heading */
+.login-container h2 {
+    margin-bottom: 30px;
+    color: #333;
+    font-size: 28px;
+}
+
+/* Form group for floating labels */
+.form-group {
+    position: relative;
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+/* Input fields (Django form fields inherit this style) */
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+/* Focus effect */
+.form-group input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0,123,255,0.3);
+}
+
+/* Floating labels */
+.form-group label {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    color: #888;
+    font-size: 16px;
+    pointer-events: none;
+    transition: 0.3s ease all;
+}
+
+/* Move label when input is focused or filled */
+.form-group input:focus + label,
+.form-group input:not(:placeholder-shown) + label {
+    top: -10px;
+    left: 10px;
+    font-size: 12px;
+    color: #007bff;
+    background: #fff;
+    padding: 0 4px;
+}
+
+/* Submit button */
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    background: #007bff;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-submit:hover {
+    background: #0056b3;
+}
+
+/* Forgot password link */
+.forgot-password {
+    margin-top: 15px;
+}
+
+.forgot-password a {
+    color: #007bff;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+/* Messages */
+.login-container p.message {
+    margin-top: 15px;
+    color: green;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .login-container {
+        padding: 30px 20px;
+    }
+}
+</style>
+{% endblock %}

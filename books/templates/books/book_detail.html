@@ -1,0 +1,68 @@
+{% extends 'books/base.html' %}
+{% block content %}
+<div class="book-detail-container">
+    <h2>{{ book.title }}</h2>
+    <p><strong>Author:</strong> {{ book.author }}</p>
+    <p><strong>Published Date:</strong> {{ book.published_date }}</p>
+    <p><strong>Description:</strong> {{ book.description }}</p>
+    <a href="{% url 'book_list' %}" class="btn-back">← Back to List</a>
+</div>
+
+<style>
+.book-detail-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px 25px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    font-family: 'Arial', sans-serif;
+}
+
+.book-detail-container h2 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.book-detail-container p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+/* Back button */
+.btn-back {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #6c757d;
+    color: #fff;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+    margin-top: 20px;
+}
+
+.btn-back:hover {
+    background: #5a6268;
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+    .book-detail-container {
+        padding: 25px 15px;
+    }
+    .book-detail-container h2 {
+        font-size: 24px;
+    }
+    .book-detail-container p {
+        font-size: 15px;
+    }
+}
+</style>
+{% endblock %}

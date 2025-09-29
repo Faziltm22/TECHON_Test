@@ -1,0 +1,135 @@
+{% extends 'books/base.html' %}
+{% block title %}Book List{% endblock %}
+
+{% block content %}
+<h2 class="page-title">Book Collection</h2>
+
+<div class="add-book-container">
+    <a href="{% url 'book_add' %}" class="btn-add-book">+ Add New Book</a>
+</div>
+
+<div class="table-container">
+    <table class="book-table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Published Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+            <tr>
+                <td>{{ book.title }}</td>
+                <td>{{ book.author }}</td>
+                <td>{{ book.published_date }}</td>
+                <td class="action-buttons">
+                    <a href="{% url 'book_detail' book.pk %}" class="btn btn-view">View</a>
+                    <a href="{% url 'book_edit' book.pk %}" class="btn btn-edit">Edit</a>
+                    <a href="{% url 'book_delete' book.pk %}" class="btn btn-delete">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<style>
+/* Page title */
+.page-title {
+    font-size: 2rem;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Add Book Button */
+.add-book-container {
+    text-align: right;
+    margin-bottom: 15px;
+}
+.btn-add-book {
+    padding: 8px 18px;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+.btn-add-book:hover {
+    background-color: #0056b3;
+}
+
+/* Table container for scroll */
+.table-container {
+    overflow-x: auto;
+}
+
+/* Table styling */
+.book-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    color: #333;
+}
+
+.book-table thead {
+    background-color: #f0f2f5;
+}
+
+.book-table th, .book-table td {
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.book-table th {
+    font-weight: 600;
+    border-bottom: 2px solid #ddd;
+}
+
+/* Alternating row colors */
+.book-table tbody tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+/* Hover effect */
+.book-table tbody tr:hover {
+    background-color: #f1f7ff;
+}
+
+/* Action buttons */
+.action-buttons a {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+    margin-right: 5px;
+    transition: 0.2s;
+}
+.btn-view { background-color: #17a2b8; }
+.btn-view:hover { background-color: #138496; }
+
+.btn-edit { background-color: #ffc107; color: #212529; }
+.btn-edit:hover { background-color: #e0a800; }
+
+.btn-delete { background-color: #dc3545; }
+.btn-delete:hover { background-color: #c82333; }
+
+/* Responsive for small screens */
+@media (max-width: 600px) {
+    .book-table th, .book-table td {
+        padding: 10px;
+        font-size: 13px;
+    }
+    .action-buttons a {
+        margin-bottom: 4px;
+        display: inline-block;
+    }
+}
+</style>
+{% endblock %}
